@@ -1,8 +1,11 @@
 function initPage() {
+    // Get the current hour of the day
     const currentHour = parseInt(moment().format("kk"));
+    // Update the page with the current date
     const currentDayEl = document.getElementById("currentDay");
     currentDayEl.innerHTML = moment().format("dddd, MMMM Do YYYY");
 
+    // Initialize a new array of note objects if none exists in local storage
     const emptyPlan = [
         {
             "time": 9,
@@ -46,6 +49,7 @@ function initPage() {
     const timeblockContainer = document.getElementById("timeblock-container");
     timeblockContainer.innerHTML = "";
 
+    // Dynamically generate the HTML for all time blocks
     for (let i=0; i<dayPlan.length; i++) {
         let hourString;
         const hour = 9 + i;
@@ -71,6 +75,7 @@ function initPage() {
 
         const noteEl = document.createElement("input");
         noteEl.setAttribute("type", "text");
+        // Compare the time block with the current time to decide what style it should have
         if (hour < currentHour) {
             noteEl.setAttribute("class", "form-control description past");
         } else if (hour === currentHour) {
@@ -91,6 +96,7 @@ function initPage() {
 
         const saveIcon = document.createElement("i");
         saveIcon.setAttribute("class", "fas fa-save");
+        // Save button saves note entered by user to local storage
         saveIcon.addEventListener("click", () => {
             dayPlan[i].note = noteEl.value;
             localStorage.setItem("plan", JSON.stringify(dayPlan));
